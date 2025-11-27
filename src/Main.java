@@ -8,22 +8,17 @@ import java.util.concurrent.FutureTask;
 
 public class Main {
     public static void main(String[] args) {
-         // dummy data for testing
-//         String[] testArgs = new String[2];
-//         testArgs[0] = "input.csv";
-//         testArgs[1] = "27";
 
-        SudokuLoader loader = new SudokuLoader("input.csv");
+        SudokuLoader loader = new SudokuLoader(args[0]);
+
         SudokuFactory factory = new SudokuFactory(loader.getBoardAsInt());
-        SudokuVerifier verifier = factory.getSudokuVerifier(0);
+        SudokuVerifier verifier = factory.getSudokuVerifier(Integer.parseInt(args[1]));
+
         FutureTask<VerificationResult> task = new FutureTask<>(verifier::verify);
+
         Thread t = new Thread(task);
         t.start();
-        try {
-            t.join();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+
         VerificationResult result;
         try {
             result = task.get();

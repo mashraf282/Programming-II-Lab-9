@@ -78,7 +78,25 @@ public class VerificationResult {
         return sb.toString();
     }
 
+    public void merge(VerificationResult result) {
+        result.rowsErrors.forEach((row, numberMap) -> {
+            numberMap.forEach((num, posList) -> {
+                this.addRowError(row, num, posList);
+            });
+        });
 
+        result.columnsErrors.forEach((col, numberMap) -> {
+            numberMap.forEach((num, posList) -> {
+                this.addColumnError(col, num, posList);
+            });
+        });
+
+        result.boxesErrors.forEach((box, numberMap) -> {
+            numberMap.forEach((num, posList) -> {
+                this.addBoxError(box, num, posList);
+            });
+        });
+    }
 
     public boolean isValid() {
         return isValid;

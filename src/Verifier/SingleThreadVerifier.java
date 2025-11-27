@@ -31,7 +31,6 @@ public class SingleThreadVerifier implements SudokuVerifier {
             }
         }
 
-
         // Check columns
         for (int j = 0; j < 9; j++) {
             Map<Integer, List<Integer>> numberPositions = new HashMap<>();
@@ -48,7 +47,6 @@ public class SingleThreadVerifier implements SudokuVerifier {
                 }
             }
         }
-
 
         // Check boxes
         for (int boxRow = 0; boxRow < 3; boxRow++) {
@@ -74,7 +72,6 @@ public class SingleThreadVerifier implements SudokuVerifier {
                 }
             }
         }
-
 
         return result;
     }
