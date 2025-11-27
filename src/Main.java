@@ -1,5 +1,10 @@
+import Verifier.SudokuFactory;
+import Verifier.SudokuVerifier;
+import Verifier.VerificationResult;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.concurrent.FutureTask;
 
 public class Main {
     public static void main(String[] args) {
@@ -8,17 +13,30 @@ public class Main {
 //         testArgs[0] = "input.csv";
 //         testArgs[1] = "27";
 
-        SudokuLoader loader = new SudokuLoader(args[0]);
-        SudokuVerifier verifier = new SudokuVerifier(loader.getBoardAsInt(), Integer.parseInt(args[1]));
-        verifier.start();
+        SudokuLoader loader = new SudokuLoader("input.csv");
+        SudokuFactory factory = new SudokuFactory(loader.getBoardAsInt());
+        SudokuVerifier verifier = factory.getSudokuVerifier(0);
+        FutureTask<VerificationResult> task = new FutureTask<>(verifier::verify);
+        Thread t = new Thread(task);
+        t.start();
         try {
-            verifier.join();
+            t.join();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+        VerificationResult result;
+        try {
+            result = task.get();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
-        System.out.println("Sudoku is valid: " + verifier.isValid());
-
+        if(result.isValid())
+            System.out.println("The Sudoku solution is valid.");
+        else {
+            System.out.println("The Sudoku solution is invalid.");
+            System.out.println(result);
+        }
 
     }
 }
