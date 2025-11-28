@@ -1,104 +1,56 @@
 package sudokuVerifiers;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class VerificationResult {
+    private final Map<Integer, Map<Integer, List<Integer>>> rows;
+    private final Map<Integer, Map<Integer, List<Integer>>> columns;
+    private final Map<Integer, Map<Integer, List<Integer>>> boxes;
 
-    private Map<Integer, Map<Integer, List<Integer>>> rowsErrors = new HashMap<>();
-    private Map<Integer, Map<Integer, List<Integer>>> columnsErrors = new HashMap<>();
-    private Map<Integer, Map<Integer, List<Integer>>> boxesErrors = new HashMap<>();
-    private boolean isValid = true;
-
-    public void addRowError(int row, int number, List<Integer> positions) {
-        rowsErrors.computeIfAbsent(row, k -> new HashMap<>()).put(number, positions);
-        isValid = false;
-    }
-
-    public void addColumnError(int col, int number, List<Integer> positions) {
-        columnsErrors.computeIfAbsent(col, k -> new HashMap<>()).put(number, positions);
-        isValid = false;
-    }
-
-    public void addBoxError(int box, int number, List<Integer> positions) {
-        boxesErrors.computeIfAbsent(box, k -> new HashMap<>()).put(number, positions);
-        isValid = false;
+    public VerificationResult() {
+        rows = new HashMap<>();
+        columns = new HashMap<>();
+        boxes = new HashMap<>();
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
+        if(rows.isEmpty() && columns.isEmpty() && boxes.isEmpty()) return "VALID";
+        return "INVALID\n" +
+                nestedMapToString(rows, "Row ") +
+                nestedMapToString(columns, "Column ") +
+                nestedMapToString(boxes, "Box ");
+    }
 
-        // ROWS
-        rowsErrors.forEach((row, numberMap) -> {
-            numberMap.forEach((num, posList) -> {
+    public void putToRows(int rowIndex, Map<Integer, List<Integer>> row) {
+        rows.put(rowIndex, row);
+    }
 
-                List<Integer> oneBased = posList.stream()
-                        .map(p -> p + 1)
-                        .toList();
+    public void putToColumns(int columnIndex, Map<Integer, List<Integer>> column) {
+        columns.put(columnIndex, column);
+    }
 
-                sb.append("ROW ").append(row + 1)
-                        .append(", #").append(num)
-                        .append(", ").append(oneBased)
+    public void putToBoxes(int boxIndex, Map<Integer, List<Integer>> box) {
+        boxes.put(boxIndex, box);
+    }
+
+    public static String nestedMapToString(Map<Integer, Map<Integer, List<Integer>>> map, String prefix) {
+        StringBuilder ret = new StringBuilder();
+        map.forEach((index, output) -> {
+            output.forEach((number, indices) -> {
+                ret.append(prefix)
+                        .append(index + 1) //0 to 1 indexed
+                        .append(", #")
+                        .append(number)
+                        .append(", ")
+                        .append(Arrays.toString(indices.stream().map(i -> i + 1).toArray())) //0 to 1 indexed
                         .append("\n");
             });
         });
-
-        // COLUMNS
-        columnsErrors.forEach((col, numberMap) -> {
-            numberMap.forEach((num, posList) -> {
-
-                List<Integer> oneBased = posList.stream()
-                        .map(p -> p + 1)
-                        .toList();
-
-                sb.append("COLUMN ").append(col + 1)
-                        .append(", #").append(num)
-                        .append(", ").append(oneBased)
-                        .append("\n");
-            });
-        });
-
-        // BOXES
-        boxesErrors.forEach((box, numberMap) -> {
-            numberMap.forEach((num, posList) -> {
-
-                List<Integer> oneBased = posList.stream()
-                        .map(p -> p + 1)
-                        .toList();
-
-                sb.append("BOX ").append(box + 1)
-                        .append(", #").append(num)
-                        .append(", ").append(oneBased)
-                        .append("\n");
-            });
-        });
-
-        return sb.toString();
+        return ret.toString();
     }
 
-    public void merge(VerificationResult result) {
-        result.rowsErrors.forEach((row, numberMap) -> {
-            numberMap.forEach((num, posList) -> {
-                this.addRowError(row, num, posList);
-            });
-        });
-
-        result.columnsErrors.forEach((col, numberMap) -> {
-            numberMap.forEach((num, posList) -> {
-                this.addColumnError(col, num, posList);
-            });
-        });
-
-        result.boxesErrors.forEach((box, numberMap) -> {
-            numberMap.forEach((num, posList) -> {
-                this.addBoxError(box, num, posList);
-            });
-        });
-    }
-
-    public boolean isValid() {
-        return isValid;
-    }
 }

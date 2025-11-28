@@ -1,6 +1,6 @@
-import sudokuVerifiers.SudokuFactory;
 import sudokuVerifiers.SudokuVerifier;
 import sudokuVerifiers.VerificationResult;
+import sudokuVerifiers.VerifierFactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,28 +8,12 @@ import java.util.concurrent.FutureTask;
 
 public class Main {
     public static void main(String[] args) throws FileNotFoundException {
-
-        SudokuFactory factory = new SudokuFactory(SudokuLoader.loadFromCSV(new File(args[0])));
-        SudokuVerifier verifier = factory.getSudokuVerifier(Integer.parseInt(args[1]));
-
-        FutureTask<VerificationResult> task = new FutureTask<>(verifier::verify);
-
-        Thread t = new Thread(task);
-        t.start();
-
-        VerificationResult result;
+        int mode = 0;
         try {
-            result = task.get();
-        } catch (Exception e) {
+            SudokuVerifier game = VerifierFactory.getVerifier(SudokuLoader.loadFromCSV(new File("input.csv")), mode);
+            System.out.println(game.verify());
+        } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-
-        if(result.isValid())
-            System.out.println("The Sudoku solution is valid.");
-        else {
-            System.out.println("The Sudoku solution is invalid.");
-            System.out.println(result);
-        }
-
     }
 }
