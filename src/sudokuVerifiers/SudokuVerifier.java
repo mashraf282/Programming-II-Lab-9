@@ -1,4 +1,4 @@
-package Verifier;
+package sudokuVerifiers;
 
 public interface SudokuVerifier {
     VerificationResult verify();

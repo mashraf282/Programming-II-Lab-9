@@ -1,4 +1,4 @@
-package Verifier;
+package sudokuVerifiers;
 
 public class SudokuFactory {
     private int[][] grid;

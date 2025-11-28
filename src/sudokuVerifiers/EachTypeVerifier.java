@@ -1,4 +1,4 @@
-package Verifier;
+package sudokuVerifiers;
 
 import java.util.*;
 import java.util.concurrent.FutureTask;

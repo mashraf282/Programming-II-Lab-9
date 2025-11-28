@@ -1,17 +1,15 @@
-import Verifier.SudokuFactory;
-import Verifier.SudokuVerifier;
-import Verifier.VerificationResult;
+import sudokuVerifiers.SudokuFactory;
+import sudokuVerifiers.SudokuVerifier;
+import sudokuVerifiers.VerificationResult;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.concurrent.FutureTask;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
 
-        SudokuLoader loader = new SudokuLoader(args[0]);
-
-        SudokuFactory factory = new SudokuFactory(loader.getBoardAsInt());
+        SudokuFactory factory = new SudokuFactory(SudokuLoader.loadFromCSV(new File(args[0])));
         SudokuVerifier verifier = factory.getSudokuVerifier(Integer.parseInt(args[1]));
 
         FutureTask<VerificationResult> task = new FutureTask<>(verifier::verify);
