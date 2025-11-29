@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] args) {
         long startTime = System.nanoTime();
         try {
-            SudokuVerifier game = VerifierFactory.getVerifier(SudokuLoader.loadFromCSV(new File("input.csv")), Integer.parseInt(args[1]));
+            SudokuVerifier game = VerifierFactory.getVerifier(SudokuLoader.loadFromCSV(new File(args[0])), Integer.parseInt(args[1]));
             System.out.println(game.verify());
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);

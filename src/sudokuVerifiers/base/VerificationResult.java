@@ -18,11 +18,11 @@ public class VerificationResult {
 
     @Override
     public String toString() {
-        if(rows.isEmpty() && columns.isEmpty() && boxes.isEmpty()) return "VALID";
-        return "INVALID\n" +
-                nestedMapToString(rows, "Row ") +
+        var ret = nestedMapToString(rows, "Row ") +
                 nestedMapToString(columns, "Column ") +
                 nestedMapToString(boxes, "Box ");
+        if(ret.isEmpty()) return "VALID";
+        return ret;
     }
 
     public void putToRows(int rowIndex, Map<Integer, List<Integer>> row) {
@@ -39,17 +39,15 @@ public class VerificationResult {
 
     public static String nestedMapToString(Map<Integer, Map<Integer, List<Integer>>> map, String prefix) {
         StringBuilder ret = new StringBuilder();
-        map.forEach((index, output) -> {
-            output.forEach((number, indices) -> {
-                ret.append(prefix)
-                        .append(index + 1) //0 to 1 indexed
-                        .append(", #")
-                        .append(number)
-                        .append(", ")
-                        .append(Arrays.toString(indices.stream().map(i -> i + 1).toArray())) //0 to 1 indexed
-                        .append("\n");
-            });
-        });
+        map.forEach((index, output) -> output
+                .forEach((number, indices) -> ret
+                .append(prefix)
+                .append(index + 1) //0 to 1 indexed
+                .append(", #")
+                .append(number)
+                .append(", ")
+                .append(Arrays.toString(indices.stream().map(i -> i + 1).toArray())) //0 to 1 indexed
+                .append("\n")));
         return ret.toString();
     }
 
