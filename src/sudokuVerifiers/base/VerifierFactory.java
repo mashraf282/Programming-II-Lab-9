@@ -1,4 +1,8 @@
-package sudokuVerifiers;
+package sudokuVerifiers.base;
+
+import sudokuVerifiers.GroupedThreadsVerifier;
+import sudokuVerifiers.PerUnitThreadVerifier;
+import sudokuVerifiers.SingleThreadedVerifier;
 
 public class VerifierFactory {
     public static SudokuVerifier getVerifier(int[][] grid, int mode) {

@@ -1,4 +1,4 @@
-package sudokuVerifiers;
+package sudokuVerifiers.base;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 public class VerificationResult {
-    private final Map<Integer, Map<Integer, List<Integer>>> rows;
-    private final Map<Integer, Map<Integer, List<Integer>>> columns;
-    private final Map<Integer, Map<Integer, List<Integer>>> boxes;
+    private Map<Integer, Map<Integer, List<Integer>>> rows;
+    private Map<Integer, Map<Integer, List<Integer>>> columns;
+    private Map<Integer, Map<Integer, List<Integer>>> boxes;
 
     public VerificationResult() {
         rows = new HashMap<>();
@@ -53,4 +53,15 @@ public class VerificationResult {
         return ret.toString();
     }
 
+    public void setRows(Map<Integer, Map<Integer, List<Integer>>> rows) {
+        this.rows = rows;
+    }
+
+    public void setColumns(Map<Integer, Map<Integer, List<Integer>>> columns) {
+        this.columns = columns;
+    }
+
+    public void setBoxes(Map<Integer, Map<Integer, List<Integer>>> boxes) {
+        this.boxes = boxes;
+    }
 }
