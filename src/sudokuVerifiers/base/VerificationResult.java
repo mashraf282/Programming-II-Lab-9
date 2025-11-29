@@ -37,7 +37,7 @@ public class VerificationResult {
         boxes.put(boxIndex, box);
     }
 
-    public static String nestedMapToString(Map<Integer, Map<Integer, List<Integer>>> map, String prefix) {
+    private static String nestedMapToString(Map<Integer, Map<Integer, List<Integer>>> map, String prefix) {
         StringBuilder ret = new StringBuilder();
         map.forEach((index, output) -> output
                 .forEach((number, indices) -> ret
