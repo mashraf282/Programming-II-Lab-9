@@ -1,10 +1,11 @@
 package sudokuVerifiers.base;
 
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.stream.IntStream;
 
 public abstract class StreamVerifier {
-    protected VerificationResult result;
     protected List<int[]> mappedGrid;
 
     public StreamVerifier(int[][] grid) {
@@ -29,9 +30,5 @@ public abstract class StreamVerifier {
                 .getValue()
                 .size() < 2);
         return map;
-    }
-
-    public VerificationResult getVerificationResult() {
-        return result;
     }
 }

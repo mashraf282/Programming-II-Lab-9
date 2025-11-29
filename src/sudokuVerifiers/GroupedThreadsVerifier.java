@@ -29,15 +29,9 @@ public class GroupedThreadsVerifier extends StreamVerifier implements SudokuVeri
         var ret = new VerificationResult();
 
         try {
-            Map<Integer, Map<Integer, List<Integer>>> rowResults = rowTask.get();
-            Map<Integer, Map<Integer, List<Integer>>> colResults = columnTask.get();
-            Map<Integer, Map<Integer, List<Integer>>> boxResults = boxTask.get();
-
-            rowResults.forEach(ret::putToRows);
-            colResults.forEach(ret::putToColumns);
-            boxResults.forEach(ret::putToBoxes);
-
-
+            ret.setRows(rowTask.get());
+            ret.setColumns(columnTask.get());
+            ret.setBoxes(boxTask.get());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -46,12 +40,8 @@ public class GroupedThreadsVerifier extends StreamVerifier implements SudokuVeri
 
     private Map<Integer, Map<Integer, List<Integer>>> verifyCategory(List<int[]> list) {
         var ret = new HashMap<Integer, Map<Integer, List<Integer>>>();
-        for (int i = 0; i < 9; i++ ){
-            var violations = verifyStream(list.get(i));
-            if(!violations.isEmpty())
-                ret.put(i, verifyStream(list.get(i)));
-        }
+        for (int i = 0; i < 9; i++)
+            ret.put(i, verifyStream(list.get(i)));
         return ret;
     }
-
 }
