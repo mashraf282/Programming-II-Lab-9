@@ -1,8 +1,7 @@
 package sudokuVerifiers.base;
 
 import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+
 import java.util.stream.IntStream;
 
 public abstract class StreamVerifier {
@@ -24,7 +23,7 @@ public abstract class StreamVerifier {
     protected Map<Integer, List<Integer>> verifyStream(int[] arr) {
         Map<Integer, List<Integer>> map = new HashMap<>();
         for (int i = 0; i < arr.length; i++)
-            map.computeIfAbsent(arr[i], e -> new ArrayList<Integer>()).add(i);
+            map.computeIfAbsent(arr[i], e -> new ArrayList<>()).add(i);
         map.entrySet()
                 .removeIf(entry -> entry
                 .getValue()

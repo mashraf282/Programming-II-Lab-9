@@ -4,12 +4,10 @@ import sudokuVerifiers.base.StreamVerifier;
 import sudokuVerifiers.base.SudokuVerifier;
 import sudokuVerifiers.base.VerificationResult;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.FutureTask;
 
 public class PerUnitThreadVerifier extends StreamVerifier implements SudokuVerifier {
     public PerUnitThreadVerifier(int[][] grid) {
@@ -21,6 +19,7 @@ public class PerUnitThreadVerifier extends StreamVerifier implements SudokuVerif
         var executor = Executors.newFixedThreadPool(27);
         var ret = new VerificationResult();
 
+        @SuppressWarnings("unchecked")
         Future<Map<Integer, List<Integer>>>[] futures = new Future[27];
 
         for (int i = 0; i < 27; i++) {
